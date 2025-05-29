@@ -1,0 +1,32 @@
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.log
+hs_err_pid*
+
+# Gradle
+.gradle/
+build/
+
+# Maven (if used)
+target/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# macOS
+.DS_Store
+
+# 기타 공통
+**/target/
+**/build/
+
+# 민감 정보
+.env
+application-secret.yml
+application-secret.properties
