@@ -1,6 +1,7 @@
 package com.welab.backend_user.domain.dto;
 
 import com.welab.backend_user.domain.SiteUser;
+import com.welab.backend_user.secret.hash.SecureHashUtils;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class SiteUserRegisterDto {
         SiteUser siteUser = new SiteUser();
 
         siteUser.setUserId(this.userId);
+        siteUser.setPassword(SecureHashUtils.hash(this.password));
         siteUser.setPhoneNumber(this.phoneNumber);
 
         /*
@@ -30,8 +32,8 @@ public class SiteUserRegisterDto {
         * 2. Spring Security의 BCryptPasswordEncoder를 사용하는게 보안상 더 좋음
         *    이 방법은 bean 주입 방식이기 때문에 dto에서 사용하지 않고 service계층에서 암호화 수행함
         * */
-        String hashPassword = this.password;
-        siteUser.setPassword(hashPassword);
+//        String hashPassword = this.password;
+//        siteUser.setPassword(hashPassword);
 
         return siteUser;
     }

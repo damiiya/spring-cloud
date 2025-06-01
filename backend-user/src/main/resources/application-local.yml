@@ -33,6 +33,12 @@ spring:
 # hibernate:
 # dialect: org.hibernate.dialect.MySQL8Dialect
 
+jwt:
+  expires-in: 86400 # 1day
+  mobile-expires-in: 31536000
+  tablet-expires-in: 31536000
+  secret-key: ${JWT_SECRET_KEY}
+
 eureka:
   instance:
     prefer-ip-address: true
