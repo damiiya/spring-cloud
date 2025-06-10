@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface RemoteAlimService {
 
     @GetMapping(value = "/hello")
-    String sms();
+    String hello();
 
     @PostMapping(value = "/sms")
     SendSmsDto.Response sendSms(@RequestBody SendSmsDto.Request request);

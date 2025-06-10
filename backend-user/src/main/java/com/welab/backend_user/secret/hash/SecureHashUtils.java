@@ -2,7 +2,7 @@ package com.welab.backend_user.secret.hash;
 
 public class SecureHashUtils {
     public static String hash(String message) {
-        // TODO: message -> SHA-1 또는SHA-256 hash
+        // TODO: message -> SHA-1 또는 SHA-256 hash 값으로 변환
 
         return message;
     }

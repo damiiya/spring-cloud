@@ -1,4 +1,4 @@
-package com.welab.api_gateway.jwt.props;
+package com.welab.api_gateway.security.jwt.props;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 public class JwtConfigProperties {
+
     private String header;
     private String secretKey;
 }

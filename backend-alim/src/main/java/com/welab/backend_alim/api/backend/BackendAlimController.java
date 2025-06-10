@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.*;
 public class BackendAlimController {
     @GetMapping(value = "/hello")
     public String hello() {
-        return "알림 백엔드 서비스가 호출되었습니다.";
+        return "알림 백엔드 서비스가 호출되었습니다";
     }
 
     @PostMapping(value = "/sms")
-    public SendSmsDto.Response sendSms(@RequestBody SendSmsDto.Request request) {
+    public SendSmsDto.Response sms(@RequestBody SendSmsDto.Request request) {
         log.info("회원가입을 축하드립니다. userId={}", request.getUserId());
         SendSmsDto.Response response = new SendSmsDto.Response();
         response.setResult("OK");
+
         return response;
     }
 }

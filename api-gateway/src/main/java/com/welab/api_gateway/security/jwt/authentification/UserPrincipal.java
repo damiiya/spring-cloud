@@ -1,4 +1,4 @@
-package com.welab.api_gateway.jwt.authentification;
+package com.welab.api_gateway.security.jwt.authentification;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +9,7 @@ import java.util.Objects;
 @Getter
 @RequiredArgsConstructor
 public class UserPrincipal implements Principal {
+
     private final String userId;
 
     public boolean hasName() {
@@ -17,6 +18,16 @@ public class UserPrincipal implements Principal {
 
     public boolean hasMandatory() {
         return userId != null;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
+
+    @Override
+    public String getName () {
+        return userId;
     }
 
     @Override
@@ -39,13 +50,4 @@ public class UserPrincipal implements Principal {
         return result;
     }
 
-    @Override
-    public String toString() {
-        return getName();
-    }
-
-    @Override
-    public String getName () {
-        return userId;
-    }
 }

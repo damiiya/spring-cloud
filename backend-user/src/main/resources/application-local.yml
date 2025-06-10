@@ -29,9 +29,8 @@ spring:
     generate-ddl: true # 오직 테스트 환경에서만
     show-sql: true
     open-in-view: false
-# properties:
-# hibernate:
-# dialect: org.hibernate.dialect.MySQL8Dialect
+  kafka:
+    bootstrap-servers: localhost:9092
 
 jwt:
   expires-in: 86400 # 1day
