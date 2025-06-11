@@ -5,8 +5,10 @@ import com.welab.backend_post.domain.Post;
 import com.welab.backend_post.domain.PostComment;
 import com.welab.backend_post.domain.dto.PostCommentCreateDto;
 import com.welab.backend_post.domain.dto.PostCreateDto;
+import com.welab.backend_post.domain.event.PostCommentEvent;
 import com.welab.backend_post.domain.repository.PostCommentRepository;
 import com.welab.backend_post.domain.repository.PostRepository;
+import com.welab.backend_post.event.producer.KafkaMessageProducer;
 import com.welab.backend_post.remote.alim.RemoteAlimService;
 import com.welab.backend_post.remote.alim.dto.SendSmsDto;
 import com.welab.backend_post.remote.user.RemoteUserService;
@@ -25,6 +27,7 @@ public class PostService {
     private final PostCommentRepository postCommentRepository;
     private final RemoteUserService remoteUserService;
     private final RemoteAlimService remoteAlimService;
+    private final KafkaMessageProducer kafkaMessageProducer;
 
     @Transactional
     public void createPost(PostCreateDto createDto) {
@@ -42,16 +45,21 @@ public class PostService {
 
         post.addComment(postComment);
 
-        // 알림톡 보내기 위해 사용자 정보 조회
-        SiteUserInfoDto userInfoDto = remoteUserService.userInfo(post.getUserId()).getData();
+        kafkaMessageProducer.send(
+                PostCommentEvent.Topic,
+                PostCommentEvent.fromEntity("Create", postComment)
+        );
 
-        // 알림톡 전송 요청
-        SendSmsDto.Request requestDto = new SendSmsDto.Request();
-        requestDto.setUserId(userInfoDto.getUserId());
-        requestDto.setPhoneNumber(userInfoDto.getPhoneNumber());
-        requestDto.setTitle("댓글 달림");
-        requestDto.setMessage("댓글이 달렸습니다.");
-
-        remoteAlimService.sms(requestDto);
+//        // 알림톡 보내기 위해 사용자 정보 조회
+//        SiteUserInfoDto userInfoDto = remoteUserService.userInfo(post.getUserId()).getData();
+//
+//        // 알림톡 전송 요청
+//        SendSmsDto.Request requestDto = new SendSmsDto.Request();
+//        requestDto.setUserId(userInfoDto.getUserId());
+//        requestDto.setPhoneNumber(userInfoDto.getPhoneNumber());
+//        requestDto.setTitle("댓글 달림");
+//        requestDto.setMessage("댓글이 달렸습니다.");
+//
+//        remoteAlimService.sms(requestDto);
     }
 }

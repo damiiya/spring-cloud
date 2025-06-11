@@ -2,6 +2,7 @@ package com.welab.backend_user.service;
 
 import com.welab.backend_user.common.exception.BadParameter;
 import com.welab.backend_user.common.exception.NotFound;
+import com.welab.backend_user.common.type.ActionAndId;
 import com.welab.backend_user.domain.SiteUser;
 import com.welab.backend_user.domain.dto.SiteUserInfoDto;
 import com.welab.backend_user.domain.dto.SiteUserLoginDto;
@@ -11,7 +12,6 @@ import com.welab.backend_user.domain.event.SiteUserInfoEvent;
 import com.welab.backend_user.domain.repository.SiteUserRepository;
 import com.welab.backend_user.event.producer.KafkaMessageProducer;
 import com.welab.backend_user.remote.alim.RemoteAlimService;
-import com.welab.backend_user.remote.alim.dto.SendSmsDto;
 import com.welab.backend_user.secret.hash.SecureHashUtils;
 import com.welab.backend_user.secret.jwt.TokenGenerator;
 import com.welab.backend_user.secret.jwt.dto.TokenDto;
@@ -30,16 +30,22 @@ public class SiteUserService {
     private final KafkaMessageProducer kafkaMessageProducer;
 
     @Transactional
-    public void registerUser(SiteUserRegisterDto registerDto) {
+    public ActionAndId registerUserAndNotify(SiteUserRegisterDto registerDto) {
         SiteUser siteUser = registerDto.toEntity();
 
         siteUserRepository.save(siteUser);
 
-//        SendSmsDto.Request request = SendSmsDto.Request.fromEntity(siteUser);
-//        remoteAlimService.sendSms(request);
+        return ActionAndId.of("Create", siteUser.getId());
+    }
 
-        SiteUserInfoEvent message = SiteUserInfoEvent.fromEntity("create", siteUser);
-        kafkaMessageProducer.send(SiteUserInfoEvent.Topic, message);
+    @Transactional
+    public ActionAndId updateEmailAndNotify() {
+        return ActionAndId.of("Update", 0L);
+    }
+
+    @Transactional
+    public ActionAndId updateAddressAndNotify() {
+        return ActionAndId.of("Update", 0L);
     }
 
     @Transactional(readOnly = true)

@@ -1,6 +1,11 @@
 server:
   port: 8761
 
+spring:
+  cloud:
+    config:
+      enabled: false
+
 # -- Eureka
 eureka:
   instance:
